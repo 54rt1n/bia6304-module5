@@ -117,4 +117,4 @@ Feel free to experiment with the code, try different LLM providers, or apply the
   - [Cohere](https://docs.cohere.com/)
   - [Groq](https://www.groq.com/)
   - [OpenAI](https://platform.openai.com/docs/)
-  - [Google AI](https://cloud.google.com/ai-platform/docs)
+  - [Google AI](https://ai.google.dev/gemini-api/docs)
