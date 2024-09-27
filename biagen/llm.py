@@ -12,6 +12,7 @@ COHERE_API_KEY = 'COHERE_API_KEY'
 GROQ_API_KEY = 'GROQ_API_KEY'
 OPENAI_API_KEY = 'OPENAI_API_KEY'
 OPENAI_MODEL_NAME = 'OPENAI_MODEL_NAME'
+GOOGLE_API_KEY = 'GOOGLE_API_KEY'
 
 
 class LLMProvider(ABC):
@@ -141,3 +142,31 @@ class OpenAIProvider(LLMProvider):
     @classmethod
     def from_url(cls, url: str, api_key: str, model_name: Optional[str] = None):
         return cls(base_url=url, api_key = api_key, model_name=model_name)
+
+
+class AIStudioProvider(LLMProvider):
+    def __init__(self, api_key: str):
+        import google.generativeai as genai
+        genai.configure(api_key=api_key)
+        self.gem = genai.GenerativeModel(self.model)
+
+    @property
+    def model(self):
+        return 'gemini-1.5-flash'
+
+    @timeit()
+    def generate(self, prompt: str, max_tokens: int, temperature: float, stop_sequences: Optional[List[str]], generations: int, **kwargs) -> List[str]:
+        from google.generativeai import GenerationConfig
+        # Currently google only supports 1 candidate
+        config = GenerationConfig(candidate_count=1, stop_sequences=stop_sequences,
+                                  max_output_tokens=max_tokens, temperature=temperature)
+        response = self.gem.generate_content(prompt, generation_config=config)
+        return [response.text.strip()]
+
+    @classmethod
+    def from_env(cls):
+        api_key = os.getenv(GOOGLE_API_KEY)
+        if not api_key:
+            raise ValueError("GOOGLE_API_KEY environment variable not set")
+        return cls(api_key)
+

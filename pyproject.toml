@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "biagen"
+version = "0.1.0"
+description = "A BIA project for generating text and analyzing data"
+authors = ["Martin Bukowski <martin.bukowski@rockhurst.edu>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+python-dotenv = "*"
+timeit-decorator = "*"
+trafilatura = "*"
+lxml_html_clean = "*"
+cohere = "*"
+groq = "*"
+openai = "*"
+google-generativeai = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
